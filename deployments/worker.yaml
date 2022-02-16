@@ -3,8 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app: worker
-  name: vote
-  Namespace: vote
+  name: worker
+  namespace: vote
 spec:
   replicas: 1
   selector:
@@ -16,5 +16,5 @@ spec:
         app: worker
     spec:
       containers:
-        - image: dockersamples/exemplevotingapp_worker
+        - image: kodekloud/examplevotingapp_worker:v1
           name: worker

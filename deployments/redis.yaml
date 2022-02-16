@@ -12,7 +12,7 @@ spec:
       app: redis
   template:
     metadata:
-      lebels:
+      labels:
         app: redis
     spec:
       containers:
