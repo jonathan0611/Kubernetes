@@ -1,0 +1,24 @@
+---
+- hosts: all
+  become: true
+  remote_user: vagrant
+  tasks:
+      - name: criando cluster
+        ansible.builtin.shell:
+          cmd:  kubeadm init --apiserver-advertise-address="192.168.15.50"
+
+      - name: criando pasta do kubeconfig
+        ansible.builtin.file:
+          path: /home/vagrant/.kube
+          state: directory  
+          mode: 0755
+          owner: vagrant
+
+      - name: copiando os arquivos do kubeconfig
+        ansible.builtin.copy:
+          src: /etc/kubernetes/admin.conf
+          dest: /home/vagrant/.kube/config
+          owner: vagrant
+          group: vagrant
+          mode:  0755
+...

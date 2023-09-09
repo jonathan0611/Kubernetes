@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: Pod 
+metadata:
+  name: web-pod
+  labels:
+    type: web-app
+spec:
+  containers:
+    - name: web-server-apache
+      image: httpd:alpine3.17
+      ports:
+      - containerPort: 80
+    - name: web-server-tomcat
+      image: tomcat:9.0.71-jdk8-corretto-al2
+      ports:
+      - containerPort: 8080
+
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: frontend-service
+spec:
+  type: ClusterIP
+  selector:
+    type: web-app
+  ports:
+   - name: httpd
+     port: 80
+     targetPort: 80

@@ -1,0 +1,26 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: web-server
+  labels:
+    type: app-web
+spec:
+  containers:
+  - name: web-server-apache
+    image: httpd:alpine3.17
+    ports:
+     - containerPort: 80
+---
+apiVersion: v1
+kind: Service 
+metadata:
+  name: front-service-loadbancer
+spec:
+  type: LoadBalancer
+  selector:
+    type: app-web
+  ports: 
+   - name: http 
+     port: 80
+     targetPort: 80
+     nodePort: 30009
