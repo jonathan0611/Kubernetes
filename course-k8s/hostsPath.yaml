@@ -1,3 +1,4 @@
+
 apiVersion: v1
 kind: Pod
 
@@ -11,10 +12,10 @@ spec:
     - name: redis-pod
       image: redis
       volumeMounts:
-        - name: redis-storage
-          mountPath: /volumes
+      - mountPath: /mnt/data
+        name: host-path
   volumes: 
-    - name: redis-storage 
-      emptyDir: {}
-      
-
+    - name: "host-path"
+      hostPath:
+        path: /my-data
+        type: Directory

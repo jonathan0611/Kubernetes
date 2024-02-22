@@ -70,25 +70,29 @@
       #   dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   
       ansible.builtin.shell:
-        cmd: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+        cmd: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
    
         
-    - name: adicionado repostorio do kubernetes
-      ansible.builtin.apt_repository:
-        repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.28/deb/ /"
-        filename: k8s
+    # - name: adicionado repostorio do kubernetes
+    #   ansible.builtin.apt_repository:
+    #     repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
+    #     filename: k8
+
+    - name: adicionado repo do kubernetes
+      ansible.builtin.shell:
+        cmd: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg]" https://apt.kubernetes.io/ kubernetes-xenial main | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
     
-    - name: instalando os binarios do kubernetes
-      ansible.builtin.apt:
-        name: "{{ binarios }}"
-        state: present
-        update_cache: yes
-      vars:
-        binarios:
-        - kubelet 
-        - kubeadm 
-        - kubectl
+    # - name: instalando os binarios do kubernetes
+    #   ansible.builtin.apt:
+    #     name: "{{ binarios }}"
+    #     state: present
+    #     update_cache: yes
+    #   vars:
+    #     binarios:
+    #     - kubelet 
+    #     - kubeadm 
+    #     - kubectl
 
 
 
