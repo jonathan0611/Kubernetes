@@ -16,8 +16,7 @@
         - apt-transport-https
         - ca-certificates
         - curl
-        - gnupg-agent
-        - software-properties-common
+        - gpg
 
 
     
@@ -66,33 +65,32 @@
 
     - name: adcionando chave gpg
       # ansible.builtin.get_url:
-      #   url: https://pkgs.k8s.io/core:/stable:/v1.28/deb/Release.key
-      #   dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
+      #    url: https://pkgs.k8s.io/core:/stable:/v1.26/deb/Release.key
+      #    dest: /etc/apt/keyrings/kubernetes-apt-keyring.gpg
   
       ansible.builtin.shell:
-        cmd: curl -fsSLo /usr/share/keyrings/kubernetes-archive-keyring.gpg https://packages.cloud.google.com/apt/doc/apt-key.gpg
-   
+         cmd: curl -fsSL https://pkgs.k8s.io/core:/stable:/v1.26/deb/Release.key | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-apt-keyring.gpg
         
     # - name: adicionado repostorio do kubernetes
     #   ansible.builtin.apt_repository:
-    #     repo: deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main
-    #     filename: k8
+    #      repo: "deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.26/deb/ /"
+    #      filename: kubernetes
 
     - name: adicionado repo do kubernetes
       ansible.builtin.shell:
-        cmd: echo "deb [signed-by=/usr/share/keyrings/kubernetes-archive-keyring.gpg]" https://apt.kubernetes.io/ kubernetes-xenial main | sudo tee /etc/apt/sources.list.d/kubernetes.list
+       cmd: echo 'deb [signed-by=/etc/apt/keyrings/kubernetes-apt-keyring.gpg] https://pkgs.k8s.io/core:/stable:/v1.26/deb/ /' | sudo tee /etc/apt/sources.list.d/kubernetes.list
 
     
-    # - name: instalando os binarios do kubernetes
-    #   ansible.builtin.apt:
-    #     name: "{{ binarios }}"
-    #     state: present
-    #     update_cache: yes
-    #   vars:
-    #     binarios:
-    #     - kubelet 
-    #     - kubeadm 
-    #     - kubectl
+    - name: instalando os binarios do kubernetes
+      ansible.builtin.apt:
+         name: "{{ binarios }}"
+         state: present
+         update_cache: yes
+      vars:
+         binarios:
+         - kubelet 
+         - kubeadm 
+         - kubectl
 
 
 
