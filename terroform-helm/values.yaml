@@ -2,7 +2,6 @@ image:
   repository: velero/velero
   tag: v1.13.0
   pullPolicy: IfNotPresent
-  imagePullSecrets: []
   resources:
   requests:
     cpu: 500m
@@ -22,28 +21,14 @@ configuration:
   - name: eks
     provider: aws
     bucket: dev-velero
-    caCert:
-    prefix:
     default: "true"
-    validationFrequency:
-    accessMode: ReadWrite
-    credential:
-      name:
-      key:
   volumeSnapshotLocation:
   - name: eks
     provider: aws
-    credential:
-      name:
-      key:
-    config: {}
-
   defaultBackupStorageLocation: eks
-
 deployNodeAgent: true
 nodeAgent:
   podVolumePath: /var/lib/kubelet/pods
-  priorityClassName: ""
   resources:
     requests:
       cpu: 500m
