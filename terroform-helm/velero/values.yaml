@@ -18,14 +18,14 @@ initContainers:
          name: plugins
 configuration:
   backupStorageLocation:
-  - name: eks
+  - name: ${backupStorageLocation_name}
     provider: aws
-    bucket: dev-velero
+    bucket: ${backupStorageLocation_bucket}
     default: "true"
   volumeSnapshotLocation:
-  - name: eks
+  - name: ${backupStorageLocation_name}
     provider: aws
-  defaultBackupStorageLocation: eks
+  defaultBackupStorageLocation: ${backupStorageLocation_name}
 deployNodeAgent: true
 nodeAgent:
   podVolumePath: /var/lib/kubelet/pods

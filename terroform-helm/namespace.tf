@@ -1,5 +1,5 @@
 resource "kubernetes_namespace" "velero" {
   metadata {
-    name = "velero"
+    name = var.namespace
   }
 }
